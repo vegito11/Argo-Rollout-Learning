@@ -25,3 +25,4 @@
     - [Bluegreen](./04-Strategy/Bluegreen.md)
        - [Sequence of Events](./04-Strategy/Blue-Green-Events.md)
        - [Configurable Feature](./04-Strategy/Configurable-Features.md)
+       - [Bluegreen Example](./04-Strategy/BlueGreen-Example.md)

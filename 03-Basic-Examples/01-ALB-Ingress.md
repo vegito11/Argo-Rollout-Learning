@@ -71,7 +71,6 @@
 
 ---------------------------------------
 
-
 - The controller has added rollouts-pod-template-hash selector to the Services and attached the same label to the Pods.  
    Therefore, you can split the traffic by simply forwarding the requests to the Services according to the weights.
    
@@ -79,4 +78,15 @@
     
     ![Alt text](./img/02.7-Svc-hash-updated.png)
 
-    
+
+---------------------------------------
+
+## CleanUp:
+
+```bash
+kubectl delete ro app1
+kubectl delete ingress app1-ingress
+kubectl delete svc app1-root app1-stable app1-canary
+```
+
+---------------------------------------
