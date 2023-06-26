@@ -1,0 +1,50 @@
+crds:
+  # -- Keep CRDs on chart uninstall
+  keep: true
+
+configs:
+
+  cm:
+    # -- Argo CD's externally facing base URL (optional). Required when configuring SSO
+    url: "https://argocd.mydomain.io"
+
+    # Dex configuration
+    dex.config: |
+      connectors:
+        - type: oidc
+          id: google
+          name: Google
+          config:
+            issuer: https://accounts.google.com
+            clientID: XXXXXXXXXXXXXXXXXXXXXXXXXXXXXX.apps.googleusercontent.com
+            clientSecret: XXXXX-XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+  
+  secret:
+    # -- Shared secret for authenticating GitHub webhook events
+    githubSecret: ""
+
+    # -- Bcrypt hashed admin password
+    ## Argo expects the password in the secret to be bcrypt hashed. You can create this hash with
+    ## `htpasswd -nbBC 10 "" $ARGO_PWD | tr -d ':\n' | sed 's/$2y/$2a/'`
+    argocdServerAdminPassword: ""
+
+server:
+  ingress:
+    enabled: true
+
+    annotations:
+      alb.ingress.kubernetes.io/ssl-redirect: '443'
+      alb.ingress.kubernetes.io/backend-protocol: HTTPS
+      alb.ingress.kubernetes.io/listen-ports: '[{"HTTP": 80}, {"HTTPS":443}]'
+      alb.ingress.kubernetes.io/rewrite-target: /
+      alb.ingress.kubernetes.io/scheme: internet-facing
+      alb.ingress.kubernetes.io/ssl-passthrough: "true"
+      alb.ingress.kubernetes.io/target-type: ip
+      kubernetes.io/ingress.class: alb
+
+    hosts:
+      - argocd.mydomain.io        
+    paths:
+      - /
+    pathType: Prefix
+

@@ -1,0 +1,40 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Rollout
+metadata:
+  name: app1
+spec:
+  replicas: 1
+  strategy:
+    canary:
+      canaryService: app1-canary
+      stableService: app1-stable
+      trafficRouting:
+        alb:
+          ingress: app1-ingress
+          servicePort: 80
+          rootService: app1-root
+      steps:
+      - setWeight: 5
+      - pause: {}
+      - setWeight: 50
+      - pause: {}
+  revisionHistoryLimit: 2
+  selector:
+    matchLabels:
+      app: app1
+  template:
+    metadata:
+      labels:
+        app: app1
+    spec:
+      containers:
+      - name: app1
+        image: argoproj/rollouts-demo:blue
+        ports:
+        - name: http
+          containerPort: 8080
+          protocol: TCP
+        resources:
+          requests:
+            memory: 32Mi
+            cpu: 5m
