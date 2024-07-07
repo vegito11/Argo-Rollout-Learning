@@ -63,7 +63,7 @@
     $ kubectl argo rollouts get rollout rollouts-demo --watch
     ```
 
-    ![Rollout Status](image.png)
+    ![Rollout Status](./img/01.3-rollout-status.png)
 
 ---------------------------------------------------
 
